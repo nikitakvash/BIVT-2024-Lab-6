@@ -60,17 +60,21 @@ namespace Lab_6
         {
             private string _name;
             private Match[] _matches;
-            private int _matchCount;
+
             public string Name { get { return _name; } }
             public Match[] Matches { get { return _matches; } }
-            public int TotalDiffirience
+            public int TotalDifference
             {
                 get
                 {
-                    int sum = 0;
-                    for (int i = 0; i < _matchCount; i++)
+                    if (_matches == null || _matches.Length == 0)
                     {
-                        sum += _matches[i].Difference;
+                        return 0;
+                    }
+                    int sum = 0;
+                    foreach (Match match in Matches)
+                    {
+                        sum = sum + match.Difference;
                     }
                     return sum;
                 }
@@ -79,10 +83,14 @@ namespace Lab_6
             {
                 get
                 {
+                    if (_matches==null || _matches.Length == 0) 
+                    { 
+                        return 0; 
+                    }
                     int sum = 0;
-                    for (int i = 0; i < _matchCount; i++)
+                    foreach (Match match in Matches)
                     {
-                        sum = sum + _matches[i].Score;
+                        sum=sum+ match.Score;
                     }
                     return sum;
                 }
@@ -90,16 +98,12 @@ namespace Lab_6
             public Team(string name)
             {
                 _name = name;
-                _matches = new Match[100];
-                _matchCount = 0;
+                _matches = new Match[0];
             }
             public void PlayMatch(int goals, int misses)
             {
-                if (_matchCount < _matches.Length)
-                {
-                    _matches[_matchCount] = new Match(goals, misses);
-                    _matchCount++;
-                }
+                Array.Resize(ref _matches, _matches.Length+1);
+                _matches[_matches.Length-1] = new Match(goals, misses);
             }
             public static void SortTeams(Team[] teams)
             {
@@ -110,19 +114,18 @@ namespace Lab_6
                     {
                         return cmp;
                     }
-                    return team2.TotalDiffirience.CompareTo(team1.TotalDiffirience);
+                    return team2.TotalDifference.CompareTo(team1.TotalDifference);
                 });
             }
             public void Print()
             {
-                Console.WriteLine($"{Name},{TotalDiffirience},{TotalScore}");
+                Console.WriteLine($"{Name},{TotalDifference},{TotalScore}");
             }
         }
     }
 }
 
 
-    
 
 
 

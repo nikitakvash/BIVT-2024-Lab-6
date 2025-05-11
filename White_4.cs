@@ -13,7 +13,6 @@ namespace Lab_6
             private string _name;
             private string _surname;
             private double[] _scores;
-            private int _scoreCount;
 
             public string Name { get { return _name; } }
             public string Surname { get { return _surname; } }
@@ -27,9 +26,9 @@ namespace Lab_6
                         return 0.0;
                     }
                     var sum = 0.0;
-                    for (int i = 0; i < _scoreCount; i++)
+                    foreach (var score in _scores)
                     {
-                        sum += _scores[i];
+                        sum += score;
                     }
                     return sum;
                 }
@@ -38,16 +37,12 @@ namespace Lab_6
             {
                 _name = name;
                 _surname = surname;
-                _scores = new double[100];
-                _scoreCount = 0;
+                _scores = new double[0];
             }
             public void PlayMatch(double result)
             {
-                if (_scoreCount < _scores.Length)
-                {
-                    _scores[_scoreCount] = result;
-                    _scoreCount++;
-                }
+                Array.Resize(ref _scores, _scores.Length+1);
+                _scores[_scores.Length-1] = result;
             }
             public static void Sort(Participant[] array)
             {

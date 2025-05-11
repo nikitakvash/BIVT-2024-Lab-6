@@ -13,7 +13,6 @@ namespace Lab_6
             private string _name;
             private string _surname;
             private int[] _marks;
-            private int _marksCount;
             private int _skipped;
 
             public string Name { get { return _name; } }
@@ -23,24 +22,20 @@ namespace Lab_6
             {
                 get
                 {
-                    if (_marks == null || _marksCount == null)
+                    if (_marks == null || _marks.Length == 0) return 0.0;
+                    double sum = 0.0;
+                    foreach (var mark in _marks)
                     {
-                        return 0.0;
+                        sum = sum + mark;
                     }
-                    var sum = 0.0;
-                    for (int i = 0; i < _marksCount; i++)
-                    {
-                        sum += _marks[i];
-                    }
-                    return sum / _marksCount;
+                    return sum/_marks.Length;
                 }
             }
             public Student(string name, string surname)
             {
                 _name = name;
                 _surname = surname;
-                _marks = new int[100];
-                _marksCount = 0;
+                _marks = new int[0];
                 _skipped = 0;
             }
             public void Lesson(int mark)
@@ -51,11 +46,8 @@ namespace Lab_6
                 }
                 else
                 {
-                    if (_marksCount < 100)
-                    {
-                        _marks[_marksCount] = mark;
-                        _marksCount++;
-                    }
+                    Array.Resize(ref _marks, _marks.Length+1);
+                    _marks[_marks.Length-1] = mark;
                 }
             }
             public static void SortBySkipped(Student[] array)
